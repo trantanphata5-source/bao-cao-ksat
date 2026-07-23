@@ -1627,7 +1627,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Desktop Sidebar Toggle
     const btnToggleSidebarDesktop = $('btnToggleSidebarDesktop');
-    const sidebar = $('sidebar');
     if (btnToggleSidebarDesktop && sidebar) {
         btnToggleSidebarDesktop.addEventListener('click', () => {
             sidebar.classList.toggle('collapsed');
