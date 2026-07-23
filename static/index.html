@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BÁO CÁO - KỸ SƯ AN TOÀN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Mobile Top Bar -->
+        <div class="mobile-topbar">
+            <button id="menuToggle" class="menu-toggle" aria-label="Menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+            </button>
+            <div class="mobile-logo">
+                <img src="logo.png" alt="Logo" class="logo-img-sm">
+                <span>BÁO CÁO - KSAT</span>
+            </div>
+            <button id="themeToggleMobile" class="theme-toggle" title="Chuyển sáng/tối">
+                <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+            </button>
+        </div>
+        <div id="sidebarOverlay" class="sidebar-overlay"></div>
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="logo.png" alt="Logo" class="logo-img">
+                    <div>
+                        <h2>BÁO CÁO - KSAT</h2>
+                        <span class="logo-sub">Kỹ Sư An Toàn - PCVT</span>
+                    </div>
+                </div>
+                <button id="themeToggle" class="theme-toggle" title="Chuyển sáng/tối">
+                    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+                </button>
+            </div>
+            
+            <div class="upload-section">
+                <form id="uploadForm" class="upload-form">
+                    <label for="fileInput" class="upload-label" id="dropZone">
+                        <svg class="upload-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 16V4m0 0L8 8m4-4l4 4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+                        <span id="uploadText">Kéo thả hoặc chọn file .docx</span>
+                        <span class="upload-hint">Báo cáo tuần mới</span>
+                    </label>
+                    <input type="file" id="fileInput" accept=".docx" hidden>
+                    <button type="submit" id="uploadBtn" class="btn primary-btn" disabled>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        Tải Lên
+                    </button>
+                </form>
+                <div id="uploadStatus" class="status-msg"></div>
+            </div>
+
+            <div class="sidebar-main-nav">
+                <button id="btnSidebarHome" class="btn drive-sidebar-btn active-nav">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    <span>🏠 Trang Chủ</span>
+                </button>
+                <button id="btnSidebarPresentation" class="btn drive-sidebar-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    <span>📺 Sinh Hoạt An Toàn</span>
+                </button>
+                <button id="btnOpenDriveSidebar" class="btn drive-sidebar-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    <span>📂 Thư Mục Dùng Chung</span>
+                </button>
+            </div>
+
+            <div class="timeline-section">
+                <div class="timeline-header">
+                    <h3>📋 Lịch sử báo cáo</h3>
+                    <span id="reportCount" class="badge">0</span>
+                </div>
+                <div id="reportList" class="report-list">
+                    <div class="empty-timeline">Chưa có báo cáo</div>
+                </div>
+            </div>
+            
+            <div class="compare-actions" id="compareActionsContainer">
+                <button id="compareBtn" class="btn compare-btn" disabled>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M3 3v18h18"/><path d="M7 16l4-8 4 4 4-8"/></svg>
+                    So sánh các tuần
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <!-- Desktop Sidebar Toggle Button -->
+            <button id="btnToggleSidebarDesktop" class="sidebar-toggle-desktop" title="Ẩn/Hiện thanh bên trái">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+
+            <!-- Home View (Trang Chủ) -->
+            <div id="homeView">
+                <div class="home-hero-card">
+                    <div class="corporate-header">
+                        <img src="logo.png" alt="EVNHCMC Logo" class="corporate-logo">
+                        <div class="corporate-titles">
+                            <h3 class="corp-name">TỔNG CÔNG TY ĐIỆN LỰC THÀNH PHỐ HỒ CHÍ MINH</h3>
+                            <h2 class="company-name">CÔNG TY ĐIỆN LỰC VŨNG TÀU</h2>
+                            <div class="dept-badge">KỸ SƯ AN TOÀN - PHÒNG KỸ THUẬT & AN TOÀN</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="home-grid">
+                    <div class="home-card" onclick="window.appShowView('presentation')">
+                        <div class="home-card-icon icon-purple">📺</div>
+                        <div class="home-card-content">
+                            <h3>Trình Chiếu Sinh Hoạt An Toàn</h3>
+                            <p>Phổ biến slide sinh hoạt an toàn định kỳ (Bài trình chiếu Sinh hoạt an toàn Tháng 7/2026)</p>
+                        </div>
+                        <span class="home-card-btn">Vào trình chiếu ➔</span>
+                    </div>
+
+                    <div class="home-card" onclick="window.appShowView('drive')">
+                        <div class="home-card-icon icon-green">📂</div>
+                        <div class="home-card-content">
+                            <h3>Kho Dữ Liệu & Thư Mục Dùng Chung</h3>
+                            <p>Lưu trữ, tra cứu văn bản quy trình, biểu mẫu, hình ảnh giám sát hiện trường ATVSLĐ</p>
+                        </div>
+                        <span class="home-card-btn">Mở kho dữ liệu ➔</span>
+                    </div>
+
+                    <div class="home-card" onclick="window.appShowView('report')">
+                        <div class="home-card-icon icon-blue">📊</div>
+                        <div class="home-card-content">
+                            <h3>Báo Cáo Công Tác Tuần & So Sánh</h3>
+                            <p>Quản lý báo cáo tuần, đối chiếu kết quả thực hiện và tự động tạo thông báo đôn đốc KSAT</p>
+                        </div>
+                        <span class="home-card-btn">Xem báo cáo ➔</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Presentation View (Trình Chiếu Slide Sinh Hoạt An Toàn) -->
+            <div id="presentationView" class="hidden">
+                <header class="main-header">
+                    <div class="header-left">
+                        <span class="header-badge presentation-badge">Trình chiếu Slide</span>
+                        <h1>Sinh Hoạt An Toàn Định Kỳ</h1>
+                        <p class="subtitle">Phổ biến công tác an toàn lao động, các sự cố tai nạn và quy định mới</p>
+                    </div>
+                    <div class="header-actions">
+                        <button id="btnFullscreenSlide" class="btn primary-btn btn-gdrive-link" title="Xem toàn màn hình">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                            <span>🖥️ Xem Toàn Màn Hình</span>
+                        </button>
+                    </div>
+                </header>
+
+                <!-- Month Selection Tabs -->
+                <div class="tabs-wrapper">
+                    <div class="tabs" id="presentationMonthTabs">
+                        <button class="tab-btn active" data-month="2026-07">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M16 2v4M8 2v4"/></svg>
+                            Sinh hoạt an toàn Tháng 7/2026
+                        </button>
+                        <button class="tab-btn" data-month="2026-08" style="opacity: 0.6; cursor: not-allowed;" title="Các tháng sau sẽ cập nhật thêm">
+                            <span>Tháng 8/2026 (Sắp diễn ra)</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Slide Stage -->
+                <div class="presentation-stage" id="presentationStage">
+                    <div class="slide-viewport" id="slideViewport">
+                        <img id="currentSlideImg" src="slides/2026-07-slides/Slide1.JPG" alt="Slide 1" class="slide-main-image">
+                        <div class="slide-number-badge" id="slideNumberBadge">Slide 1 / 26</div>
+                    </div>
+
+                    <!-- Slide Controls -->
+                    <div class="slide-controls-bar">
+                        <button id="btnPrevSlide" class="btn icon-btn slide-ctrl-btn" title="Slide trước">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M15 18l-6-6 6-6"/></svg>
+                            <span>Trượt trước</span>
+                        </button>
+
+                        <div class="slide-jump-box">
+                            <span>Trang</span>
+                            <input type="number" id="slideInputNumber" min="1" max="26" value="1">
+                            <span id="slideTotalCount">/ 26</span>
+                        </div>
+
+                        <button id="btnNextSlide" class="btn primary-btn slide-ctrl-btn" title="Slide tiếp">
+                            <span>Trượt tiếp</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M9 18l6-6-6-6"/></svg>
+                        </button>
+
+                        <div class="slide-ctrl-divider"></div>
+
+                        <button id="btnToggleAutoPlay" class="btn icon-btn" title="Tự động chuyển slide">
+                            <span id="autoPlayLabel">▶ Tự động</span>
+                        </button>
+
+                        <button id="btnToggleThumbnails" class="btn icon-btn" title="Ẩn/Hiện danh sách slide bên dưới">
+                            <span>👁️ Danh sách Slide</span>
+                        </button>
+                    </div>
+
+                    <!-- Collapsible Bottom Slide List Bar -->
+                    <div class="slide-thumbs-container" id="slideThumbsContainer">
+                        <div class="slide-thumbs-header">
+                            <h4>📋 Danh sách tất cả 26 Slides</h4>
+                            <button id="btnCloseThumbs" class="btn icon-btn" style="padding: 2px 6px;">✕ Ẩn thanh</button>
+                        </div>
+                        <div class="slide-thumbs-scroll" id="slideThumbsScroll"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Report View -->
+            <div id="reportView" class="hidden">
+                <header class="main-header">
+                    <div class="header-left">
+                        <span class="header-badge">Báo cáo tuần</span>
+                        <h1 id="mainTitle"></h1>
+                        <p id="subTitle" class="subtitle"></p>
+                    </div>
+                    <button id="deleteBtn" class="btn icon-btn danger-btn" title="Xóa báo cáo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M3 6h18M8 6V4h8v2M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg>
+                    </button>
+                </header>
+
+                <!-- KPI Cards -->
+                <div id="kpiCards" class="kpi-grid"></div>
+
+                <!-- Tabs -->
+                <div class="tabs-wrapper">
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="tab-1">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+                            Kết Quả Triển Khai
+                        </button>
+                        <button class="tab-btn" data-tab="tab-2">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M16 2v4M8 2v4"/></svg>
+                            Kế Hoạch
+                        </button>
+                        <button class="tab-btn" data-tab="tab-3">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+                            Kiến Nghị
+                        </button>
+                        <button class="tab-btn" data-tab="tab-4" id="tabDriveBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                            Thư Mục Dùng Chung
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tab-panels">
+                    <div class="tab-content active" id="tab-1">
+                        <div id="section1Content" class="structured-content"></div>
+                        <div id="tableSection" class="table-section hidden">
+                            <div class="section-card">
+                                <div class="card-header">
+                                    <span class="card-icon">📊</span>
+                                    <h3>Bảng số liệu: Khảo sát, tư vấn điện gia đình</h3>
+                                </div>
+                                <div class="table-responsive">
+                                    <table id="dataTable" class="data-table">
+                                        <thead><tr>
+                                            <th>STT</th><th>Đơn vị</th><th>Kế hoạch</th>
+                                            <th>TB tháng</th><th>TH tuần</th><th>Lũy kế</th><th>Còn lại</th><th>Tiến độ</th>
+                                        </tr></thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-content" id="tab-2">
+                        <div id="section2Content" class="structured-content"></div>
+                    </div>
+                    <div class="tab-content" id="tab-3">
+                        <div id="section3Content" class="structured-content"></div>
+                    </div>
+                    <div class="tab-content" id="tab-4">
+                        <div id="tab4DriveContainer"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Drive View (Kho Dữ Liệu Dùng Chung) -->
+            <div id="driveView" class="hidden">
+                <header class="main-header">
+                    <div class="header-left">
+                        <h1>Kho Dữ Liệu & Thư Mục Dùng Chung</h1>
+                        <p class="subtitle">Lưu trữ, chia sẻ và quản lý các văn bản, báo cáo, biểu mẫu ATVSLĐ của KSAT</p>
+                    </div>
+                </header>
+
+                <div class="drive-container">
+                    <!-- Toolbar & Breadcrumbs -->
+                    <div class="drive-toolbar">
+                        <div class="drive-toolbar-top">
+                            <div id="driveBreadcrumb" class="drive-breadcrumb">
+                                <span class="crumb-item active" data-folder-id="root">🏠 Thư Mục Gốc</span>
+                            </div>
+                            <div class="drive-stats-badge" id="driveStatsBadge">0 mục</div>
+                        </div>
+
+                        <div class="drive-actions-row">
+                            <div class="drive-search-box">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                                <input type="text" id="driveSearchInput" placeholder="Tìm kiếm thư mục, tài liệu, file...">
+                            </div>
+                            
+                            <div class="drive-btn-group">
+                                <button id="btnCreateFolder" class="btn drive-action-btn primary-sub-btn">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>
+                                    <span>Tạo Thư Mục</span>
+                                </button>
+                                <button id="btnAddFile" class="btn drive-action-btn primary-sub-btn">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+                                    <span>Thêm File / Link</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Filter Pills -->
+                        <div class="drive-filter-pills" id="driveFilterPills">
+                            <button class="filter-pill active" data-filter="all">Tất cả</button>
+                            <button class="filter-pill" data-filter="folder">📁 Thư mục</button>
+                            <button class="filter-pill" data-filter="docx">📄 Word</button>
+                            <button class="filter-pill" data-filter="xlsx">📊 Excel</button>
+                            <button class="filter-pill" data-filter="pdf">📕 PDF</button>
+                            <button class="filter-pill" data-filter="media">🖼️ Media</button>
+                            <button class="filter-pill" data-filter="link">🔗 Link Drive</button>
+                        </div>
+                    </div>
+
+                    <!-- Drive Content Grid -->
+                    <div id="driveGrid" class="drive-grid"></div>
+                </div>
+            </div>
+
+            <!-- Comparison View -->
+            <div id="compareArea" class="hidden">
+                <header class="main-header">
+                    <div class="header-left">
+                        <span class="header-badge compare-badge">So sánh</span>
+                        <h1>So Sánh Hiệu Quả Các Tuần</h1>
+                        <p class="subtitle" id="compareSubtitle"></p>
+                    </div>
+                    <div class="header-actions">
+                        <button id="btnOpenReminder" class="btn primary-btn btn-reminder" title="Tạo thông báo đôn đốc/nhắc nhở gửi KSAT">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"/></svg>
+                            <span>📢 Nhắc nhở KSAT</span>
+                        </button>
+                        <button id="closeCompare" class="btn icon-btn" title="Đóng so sánh">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+                </header>
+
+                <!-- Summary Overview -->
+                <div class="compare-summary" id="compareSummary"></div>
+
+                <div class="charts-container">
+                    <div class="chart-card">
+                        <div class="card-header"><span class="card-icon">📈</span><h3>Số phiếu KSTV thực hiện trong tuần</h3></div>
+                        <p class="chart-desc">So sánh tổng số phiếu Khảo sát tư vấn (KSTV) đã hoàn thành trong mỗi tuần</p>
+                        <canvas id="weeklyChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <div class="card-header"><span class="card-icon">📊</span><h3>Tiến độ lũy kế phiếu KSTV</h3></div>
+                        <p class="chart-desc">Tổng số phiếu KSTV lũy kế từ đầu năm đến cuối mỗi tuần so với kế hoạch cả năm</p>
+                        <canvas id="cumulativeChart"></canvas>
+                    </div>
+                    <div class="chart-card full-width">
+                        <div class="card-header"><span class="card-icon">🔄</span><h3>Thay đổi số liệu phiếu KSTV giữa 2 tuần</h3></div>
+                        <p class="chart-desc">Chênh lệch số lượng phiếu KSTV giữa tuần mới nhất và tuần trước đó (số phiếu & phần trăm)</p>
+                        <div id="deltaCards" class="delta-grid"></div>
+                    </div>
+                </div>
+
+                <!-- Plan vs Result -->
+                <div class="compare-section" id="planVsResultSection">
+                    <div class="card-header"><span class="card-icon">📋</span><h3>Đối chiếu: Kế hoạch tuần trước ↔ Kết quả tuần này</h3></div>
+                    <div id="planVsResultContent" class="compare-columns"></div>
+                </div>
+
+                <!-- Plan Analysis / Conclusion -->
+                <div class="compare-section" id="planAnalysisSection">
+                    <div class="card-header"><span class="card-icon">🔍</span><h3>Nhận xét: Đối chiếu Kế hoạch ↔ Kết quả thực hiện</h3></div>
+                    <div id="planAnalysisContent"></div>
+                </div>
+
+                <!-- Detail Comparison Table -->
+                <div class="compare-section" id="detailCompareSection">
+                    <div class="card-header"><span class="card-icon">📊</span><h3>So sánh số liệu chi tiết theo đơn vị</h3></div>
+                    <div class="table-responsive">
+                        <table id="detailCompareTable" class="data-table"></table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state">
+                <div class="empty-visual">
+                    <svg viewBox="0 0 120 120" fill="none" width="120" height="120">
+                        <circle cx="60" cy="60" r="55" stroke="#334155" stroke-width="2" stroke-dasharray="8 6"/>
+                        <path d="M40 75V50l10-10h20l10 10v25" stroke="#475569" stroke-width="2"/>
+                        <path d="M50 40h20v10H50z" fill="#1e293b" stroke="#475569" stroke-width="2"/>
+                        <line x1="55" y1="55" x2="65" y2="55" stroke="#3b82f6" stroke-width="2"/>
+                        <line x1="55" y1="60" x2="65" y2="60" stroke="#3b82f6" stroke-width="2"/>
+                        <line x1="55" y1="65" x2="62" y2="65" stroke="#3b82f6" stroke-width="2"/>
+                    </svg>
+                </div>
+                <h3>Chào mừng đến Dashboard ATVSLĐ</h3>
+                <p>Tải lên file báo cáo Word (.docx) ở sidebar bên trái để bắt đầu hoặc mở Thư Mục Dùng Chung.</p>
+                <div style="margin-top: 1.25rem;">
+                    <button id="btnEmptyDrive" class="btn primary-btn" style="width: auto; padding: 0.6rem 1.5rem;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                        <span>📂 Mở Kho Dữ Liệu Dùng Chung</span>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Reminder Modal -->
+    <div id="reminderModal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <span class="modal-icon">📢</span>
+                    <h3>Thông Báo Nhắc Nhở Kỹ Sư An Toàn (KSAT)</h3>
+                </div>
+                <button id="closeReminderModal" class="btn icon-btn" title="Đóng modal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-desc">Nội dung đôn đốc tự động tổng hợp từ kết quả đối chiếu 2 tuần. Bạn có thể chỉnh sửa nội dung văn bản bên dưới trước khi sao chép gửi Zalo/Email cho lực lượng KSAT:</p>
+                <textarea id="reminderTextarea" class="reminder-textarea" rows="15" placeholder="Đang khởi tạo thông báo..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <span id="copyToast" class="copy-toast hidden">✅ Đã sao chép vào bộ nhớ tạm!</span>
+                <button id="btnCopyReminder" class="btn primary-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Sao chép thông báo</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Folder Modal -->
+    <div id="createFolderModal" class="modal-overlay hidden">
+        <div class="modal-card modal-card-sm">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <span class="modal-icon">📁</span>
+                    <h3>Tạo Thư Mục Mới</h3>
+                </div>
+                <button id="closeCreateFolderModal" class="btn icon-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Tên thư mục <span style="color:var(--red)">*</span></label>
+                    <input type="text" id="folderNameInput" class="form-control" placeholder="Ví dụ: Báo cáo an toàn Quý 3/2026">
+                </div>
+                <div class="form-group">
+                    <label>Màu sắc / Chủ đề</label>
+                    <select id="folderThemeSelect" class="form-control">
+                        <option value="blue">🟦 Xanh lam (Báo cáo / Kế hoạch)</option>
+                        <option value="green">🟩 Xanh lá (Kết quả / An toàn)</option>
+                        <option value="amber">🟧 Cam / Vàng (Biểu mẫu / Khảo sát)</option>
+                        <option value="purple">🟪 Tím (Chỉ đạo / Quy trình)</option>
+                        <option value="cyan">🩵 Xanh ngọc (Thử nghiệm ETC)</option>
+                        <option value="red">🟥 Đỏ (Cảnh báo / Sự cố)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Ghi chú / Mô tả ngắn</label>
+                    <input type="text" id="folderDescInput" class="form-control" placeholder="Tùy chọn: Nhập mô tả thư mục...">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btnCancelFolder" class="btn icon-btn">Hủy</button>
+                <button id="btnSaveFolder" class="btn primary-btn">Tạo Thư Mục</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add File / Link Modal -->
+    <div id="addFileModal" class="modal-overlay hidden">
+        <div class="modal-card modal-card-sm">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <span class="modal-icon">📄</span>
+                    <h3>Thêm File / Tài Liệu Mới</h3>
+                </div>
+                <button id="closeAddFileModal" class="btn icon-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>📁 Chọn File từ máy tính (Tùy chọn)</label>
+                    <input type="file" id="localFileInput" class="form-control" style="padding: 0.4rem;">
+                </div>
+                <div class="form-group">
+                    <label>Tên tài liệu / File <span style="color:var(--red)">*</span></label>
+                    <input type="text" id="fileNameInput" class="form-control" placeholder="Ví dụ: Quy trình An toàn Điện EVN 2026.pdf">
+                </div>
+                <div class="form-group">
+                    <label>Đường dẫn đính kèm (URL - Tùy chọn)</label>
+                    <input type="url" id="fileUrlInput" class="form-control" placeholder="Tùy chọn: Dán đường dẫn đính kèm nếu có...">
+                </div>
+                <div class="form-group">
+                    <label>Loại định dạng tài liệu</label>
+                    <select id="fileTypeSelect" class="form-control">
+                        <option value="docx">📄 Word (.docx / .doc)</option>
+                        <option value="xlsx">📊 Excel (.xlsx / .xls)</option>
+                        <option value="pdf">📕 PDF (.pdf)</option>
+                        <option value="media">🖼️ Hình ảnh / Video hiện trường</option>
+                        <option value="link">🔗 Đường dẫn / Link</option>
+                        <option value="note">📝 Văn bản / Ghi chú</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Mô tả ngắn</label>
+                    <input type="text" id="fileDescInput" class="form-control" placeholder="Tùy chọn: Nhập mô tả tài liệu...">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btnCancelFile" class="btn icon-btn">Hủy</button>
+                <button id="btnSaveFile" class="btn primary-btn">Thêm Tài Liệu</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

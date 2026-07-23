@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+reports/
+uploads/
+.env
+node_modules/
+.vercel/
+*.pptx
+*.docx
+*.pdf
+temp_b64.txt
