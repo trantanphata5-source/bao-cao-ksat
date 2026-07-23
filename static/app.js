@@ -1630,10 +1630,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (btnToggleSidebarDesktop && sidebar) {
         btnToggleSidebarDesktop.addEventListener('click', () => {
             sidebar.classList.toggle('collapsed');
-            const isCollapsed = sidebar.classList.contains('collapsed');
-            btnToggleSidebarDesktop.innerHTML = isCollapsed
-                ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M9 18l6-6-6-6"/></svg>`
-                : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M15 18l-6-6 6-6"/></svg>`;
         });
     }
 

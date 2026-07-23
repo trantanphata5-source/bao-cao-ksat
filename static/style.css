@@ -1169,11 +1169,11 @@ body {
 }
 .sidebar-toggle-desktop {
     position: absolute;
-    top: 1rem;
-    left: 1rem;
+    top: 76px; /* Below the theme toggle */
+    left: 260px; /* Aligned with theme toggle on the right side of sidebar */
     z-index: 90;
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
     border-radius: var(--radius-sm);
     background: var(--bg-card);
     border: 1px solid var(--border-strong);
@@ -1183,7 +1183,11 @@ body {
     justify-content: center;
     cursor: pointer;
     box-shadow: var(--shadow-sm);
-    transition: var(--transition);
+    transition: left var(--transition), top var(--transition), background var(--transition);
+}
+.sidebar.collapsed ~ .main-content .sidebar-toggle-desktop {
+    left: 1rem;
+    top: 1rem;
 }
 .sidebar-toggle-desktop:hover {
     background: var(--accent-soft);
