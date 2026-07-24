@@ -7,11 +7,24 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbz-tJf_LZ6p5vKe3bC2qY56
 
 // ─── Google Sheets Store ───
 class ReportStore {
-    async save(report) {
+    async save(report, file = null) {
+        let fileData = null;
+        if (file) {
+            try {
+                fileData = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = err => reject(err);
+                });
+            } catch(e) {
+                console.error('Lỗi chuyển file base64:', e);
+            }
+        }
         await fetch(API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'text/plain' },
-            body: JSON.stringify({ action: 'save', report })
+            body: JSON.stringify({ action: 'save', report, fileData })
         });
     }
 
@@ -354,9 +367,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
             const report = await parseDocx(file);
 
-            uploadStatus.textContent = '⏳ Đang lưu lên server...';
+            uploadStatus.textContent = '⏳ Đang lưu lên Google Drive & Server...';
             uploadStatus.classList.add('status-success');
-            await store.save(report);
+            await store.save(report, file);
 
             uploadStatus.textContent = '✓ Tải lên thành công!';
             fileInput.value = '';
