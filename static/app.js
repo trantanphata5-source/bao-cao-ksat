@@ -3,7 +3,7 @@
 // ═══════════════════════════════════════════════════════════
 
 // ★★★ THAY URL NÀY BẰNG URL APPS SCRIPT CỦA BẠN ★★★
-const API_URL = 'https://script.google.com/macros/s/AKfycbz-tJf_LZ6p5vKe3bC2qY56XsUEUZrdWtw-YQsZkAIwl85Vl9wtv9XfPk5GVOaWSSqf/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbwQJf2DEsggwVHbKb7mBO3yGBVjYMQX1H-R8BXDCDDsrYgnxVokVsIZSeg3OLvuZyVubA/exec';
 
 // ─── Google Sheets Store ───
 class ReportStore {
