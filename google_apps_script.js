@@ -236,15 +236,17 @@ function saveDriveItem(item) {
       const bytes = Utilities.base64Decode(b64Data);
       const blob = Utilities.newBlob(bytes, mime, item.name);
       const driveFile = folder.createFile(blob);
-      driveFile.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
       fileUrl = driveFile.getUrl();
+      try {
+        driveFile.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+      } catch (shareErr) {
+        Logger.log('Không thể đặt quyền chia sẻ link công khai: ' + shareErr.message);
+      }
       
       Logger.log('Đã tạo file trên Drive: ' + fileUrl + ' (size: ' + bytes.length + ' bytes)');
     } catch (err) {
       driveError = err.message;
       Logger.log('LỖI upload file vào Drive: ' + err.message);
-      // Vẫn để fileUrl = '' để không lưu data URL khổng lồ vào Sheet
-      fileUrl = '';
     }
   }
 
