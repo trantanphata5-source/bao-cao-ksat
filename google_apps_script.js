@@ -4,6 +4,12 @@ const DRIVE_SHEET_NAME = 'DriveItems';
 // ID Thư mục Google Drive của bạn - Tự động lưu file vào đây khi upload từ web
 const DRIVE_FOLDER_ID = '17_809JzLyZoYKDP2JDoPhwwTn912HCKQ';
 
+// ★ BẤM CHẠY HÀM NÀY NẾU BỊ BÁO LỖI "Truy cập bị từ chối: DriveApp" ★
+function authorizeDrive() {
+  const folder = DriveApp.getFolderById(DRIVE_FOLDER_ID);
+  Logger.log('Đã kích hoạt quyền Drive thành công cho thư mục: ' + folder.getName());
+}
+
 function getOrCreateSheet(sheetName) {
   const name = sheetName || SHEET_NAME;
   const ss = SpreadsheetApp.getActiveSpreadsheet();
