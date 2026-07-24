@@ -212,18 +212,33 @@ function listDriveItems() {
 
 function saveDriveItem(item) {
   let fileUrl = item.url || '';
+  let driveError = '';
 
+  // Nếu URL là data URL (base64 từ máy tính), tạo file thực trên Drive
   if (item.url && item.url.indexOf('data:') === 0) {
     try {
       const folder = DriveApp.getFolderById(DRIVE_FOLDER_ID);
-      const parts = item.url.split(',');
-      const mime = parts[0].match(/:(.*?);/)[1];
-      const bytes = Utilities.base64Decode(parts[1]);
+      const commaIndex = item.url.indexOf(',');
+      if (commaIndex === -1) throw new Error('Data URL không hợp lệ');
+      
+      const header = item.url.substring(0, commaIndex);
+      const b64Data = item.url.substring(commaIndex + 1);
+      
+      const mimeMatch = header.match(/:(.*?);/);
+      const mime = mimeMatch ? mimeMatch[1] : 'application/octet-stream';
+      
+      const bytes = Utilities.base64Decode(b64Data);
       const blob = Utilities.newBlob(bytes, mime, item.name);
       const driveFile = folder.createFile(blob);
+      driveFile.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
       fileUrl = driveFile.getUrl();
+      
+      Logger.log('Đã tạo file trên Drive: ' + fileUrl + ' (size: ' + bytes.length + ' bytes)');
     } catch (err) {
-      Logger.log('Lỗi upload file vào Drive: ' + err.message);
+      driveError = err.message;
+      Logger.log('LỖI upload file vào Drive: ' + err.message);
+      // Vẫn để fileUrl = '' để không lưu data URL khổng lồ vào Sheet
+      fileUrl = '';
     }
   }
 
@@ -236,6 +251,7 @@ function saveDriveItem(item) {
         [item.id, item.parentId || 'root', item.type || 'file', item.name, fileUrl, item.desc || '', item.theme || '', item.date || new Date().toISOString()]
       ]);
       item.url = fileUrl;
+      if (driveError) item.driveError = driveError;
       return item;
     }
   }
@@ -252,6 +268,7 @@ function saveDriveItem(item) {
   ]);
 
   item.url = fileUrl;
+  if (driveError) item.driveError = driveError;
   return item;
 }
 

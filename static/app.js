@@ -360,14 +360,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!file) return;
 
         uploadBtn.disabled = true;
-        uploadBtn.innerHTML = '<span class="spinner"></span> Đang xử lý...';
+        uploadBtn.innerHTML = '<span class="spinner"></span> Đang upload...';
         uploadStatus.textContent = '';
         uploadStatus.className = 'status-msg';
 
         try {
             const report = await parseDocx(file);
 
-            uploadStatus.textContent = '⏳ Đang lưu lên Google Drive & Server...';
+            uploadStatus.textContent = '⏳ Đang upload...';
             uploadStatus.classList.add('status-success');
             await store.save(report, file);
 
@@ -1594,7 +1594,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!name) { alert('Vui lòng chọn file hoặc nhập tên tài liệu!'); return; }
 
             btnSaveFile.disabled = true;
-            btnSaveFile.textContent = '⏳ Đang tải file lên Google Drive...';
+            btnSaveFile.textContent = '⏳ Đang upload...';
 
             let fileUrl = urlInput || '';
             const selectedFile = localFileInput && localFileInput.files && localFileInput.files[0];
@@ -1625,7 +1625,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                     newFile.url = res.item.url;
                     saveDriveItems(items);
                 }
-            } catch(e) {}
+                if (res && res.item && res.item.driveError) {
+                    console.error('Drive error:', res.item.driveError);
+                    alert('⚠️ Lỗi lưu file lên Google Drive: ' + res.item.driveError);
+                }
+            } catch(e) {
+                console.error('Lỗi gửi dữ liệu lên server:', e);
+                alert('⚠️ Lỗi kết nối server: ' + e.message);
+            }
 
             btnSaveFile.disabled = false;
             btnSaveFile.textContent = 'Thêm Tài Liệu';
